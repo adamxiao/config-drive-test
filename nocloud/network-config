@@ -1,0 +1,10 @@
+version: 1
+config:
+  - type: physical
+    name: eth0
+    mac_address: "52:54:00:12:34:56"
+    subnets:
+      - type: static
+        address: 10.20.2.101
+        netmask: 255.255.240.0
+        gateway: 10.20.1.1

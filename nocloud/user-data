@@ -1,0 +1,4 @@
+#cloud-config
+password: ksvd2020
+chpasswd: { expire: False }
+ssh_pwauth: True
