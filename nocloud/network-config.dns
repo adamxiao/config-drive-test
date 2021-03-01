@@ -8,3 +8,9 @@ config:
         address: 10.0.2.15
         netmask: 255.255.255.0
         gateway: 10.0.2.2
+    - type: nameserver
+      address:
+        - 192.168.23.2
+        - 8.8.8.8
+      search:
+        - exemplary

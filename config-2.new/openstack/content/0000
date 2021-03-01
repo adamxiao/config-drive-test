@@ -1,0 +1,5 @@
+iface eth0 inet static
+  address 172.16.16.13
+  netmask 255.255.240.0
+  gateway 172.16.16.1
+  dns-nameservers 183.60.83.19 183.60.82.98

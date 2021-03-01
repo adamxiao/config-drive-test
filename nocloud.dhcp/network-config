@@ -1,0 +1,7 @@
+version: 1
+config:
+  - type: physical
+    name: eth0
+    mac_address: "52:54:00:12:34:56"
+    subnets:
+      - type: dhcp

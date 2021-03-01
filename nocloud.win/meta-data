@@ -1,0 +1,4 @@
+#cloud-config
+instance-id: win-local01
+hostname: windowshost1
+local-hostname: windowshost1

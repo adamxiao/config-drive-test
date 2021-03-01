@@ -1,0 +1,1 @@
+"C:\Program Files\QCloud\YunJing\uninst.exe" /S 
