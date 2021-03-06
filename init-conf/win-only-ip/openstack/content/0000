@@ -1,0 +1,5 @@
+iface eth0 inet static
+  address 10.20.2.235
+  netmask 255.255.240.0
+  gateway 10.20.1.1
+  dns-nameservers 114.114.114.114 8.8.8.8

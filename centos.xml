@@ -1,0 +1,56 @@
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+<name>centos</name>
+<uuid>8580e345-52cc-32fb-e4bb-513b03f84a1e</uuid>
+<memory unit='MiB'>4096</memory>
+<currentMemory unit='MiB'>4096</currentMemory>
+<vcpu placement='static'>4</vcpu>
+<cpu mode='custom' match='exact'>
+<topology sockets='1' cores='4' threads='1' />
+<model fallback='allow'>core2duo</model>
+<feature policy='require' name='vmx'/>
+</cpu>
+<os>
+<type arch='x86_64' machine='pc'>hvm</type>
+<boot dev='hd'/>
+<boot dev='cdrom'/>
+</os>
+<features>
+<acpi/>
+<apic/>
+<pae/>
+</features>
+<on_poweroff>destroy</on_poweroff>
+<on_reboot>restart</on_reboot>
+<on_crash>destroy</on_crash>
+<devices>
+<emulator>/usr/libexec/qemu-kvm</emulator>
+<input type='tablet' bus='usb'/>
+<channel type='unix'>
+<target type='virtio' name='org.qemu.guest_agent.0'/>
+</channel>
+<disk type='file' device='disk'>
+<driver name='qemu' type='qcow2'/>
+<source file='/mnt/workspaces/config-drive-test/boot-disk.img'/>
+<target dev='hda' bus='ide'/>
+</disk>
+<disk type='file' device='cdrom'>
+<driver name='qemu' type='raw'/>
+<source file='/mnt/workspaces/config-drive-test/seed.iso'/>
+<target dev='hdb' bus='ide'/>
+</disk>
+<interface type='bridge'>
+<source bridge='Mdvs'/>
+<virtualport type='openvswitch' />
+<mac address='52:54:84:00:00:89'/>
+<model type='virtio'/>
+</interface>
+<input type='mouse' bus='ps2'/>
+<graphics type='vnc' port='5910' autoport='no' listen='0.0.0.0' keymap='en-us'/>
+</devices>
+<clock offset='localtime'>
+<timer name='pit' tickpolicy='delay'/>
+<timer name='rtc' tickpolicy='catchup'/>
+<timer name='hpet' present='no'/>
+</clock>
+</domain>
+

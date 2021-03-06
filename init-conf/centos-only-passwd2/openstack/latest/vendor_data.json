@@ -1,0 +1,1 @@
+{"cloud-init": "#cloud-config\n\n---\npassword: ksvd2020\nssh_pwauth: true\nchpasswd: { expire: False }"}

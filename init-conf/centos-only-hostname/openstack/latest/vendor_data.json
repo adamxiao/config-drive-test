@@ -1,0 +1,1 @@
+{"cloud-init": "#cloud-config\n\n---\nfqdn: adam-hello2\nhostname: adam-hello2\nruncmd:\n- hostnamectl --transient set-hostname adam-hello2 &\n- hostnamectl --static set-hostname adam-hello2 &\n- hostnamectl --pretty set-hostname adam-hello2 &"}

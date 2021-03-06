@@ -1,0 +1,77 @@
+#cloud-config
+
+---
+bootcmd:
+- dev=$(blkid -tLABEL=config-2 -odevice)
+- mount_dir=$(mktemp -d /tmp/tmp.XXXXXX)
+- start_action_file=${mount_dir}/qcloud_action/TencentCloudRun.sh
+- login_banner_file=${mount_dir}/qcloud_action/login_banner.sh
+- action_file=${mount_dir}/qcloud_action/action.sh
+- mount -o loop $dev $mount_dir
+- cp -f $start_action_file /var/lib/cloud/scripts/per-boot/
+- chmod 755 /var/lib/cloud/scripts/per-boot/TencentCloudRun.sh
+- mkdir -p /usr/local/qcloud/action
+- cp -f $action_file /usr/local/qcloud/action
+- cp -f $login_banner_file /usr/local/qcloud/action
+- umount $mount_dir
+- rm -rf $mount_dir
+chpasswd:
+    expire: false
+    list:
+    - root:ksvd2020
+disable_root: false
+fqdn: adam-hello
+growpart:
+    devices:
+    - /
+    ignore_growroot_disabled: false
+    mode: auto
+hostname: adam-hello
+manage_etc_hosts: template
+manage_resolv_conf: true
+ntp:
+    servers:
+    - ntpupdate.tencentyun.com
+resolv_conf:
+    nameservers:
+    - 183.60.83.19
+    - 183.60.82.98
+runcmd:
+- systemctl reload-or-restart ntpd.service &
+- service ntpd restart &
+- rm -f /run/cloud-init/.instance-id &
+- rpm --import http://mirrors.tencentyun.com/centos/RPM-GPG-KEY-CentOS-7
+- rpm --import http://mirrors.tencentyun.com/epel/RPM-GPG-KEY-EPEL-7
+- hostnamectl --transient set-hostname adam-hello &
+- hostnamectl --static set-hostname adam-hello &
+- hostnamectl --pretty set-hostname adam-hello &
+- dev=$(blkid -tLABEL=config-2 -odevice)
+- mkdir -p /var/lib/cloud/tmp/7f61049e-c369-40e3-b42f-422cc8a9ae97
+- mount $dev /var/lib/cloud/tmp/7f61049e-c369-40e3-b42f-422cc8a9ae97
+- cp -r /var/lib/cloud/tmp/7f61049e-c369-40e3-b42f-422cc8a9ae97/qcloud_init/ /
+- umount -l $dev
+- rm -rf /var/lib/cloud/tmp/7f61049e-c369-40e3-b42f-422cc8a9ae97
+- sh /qcloud_init/cvm_init.sh >> /tmp/cvm_init.log 2>&1 &
+ssh_pwauth: true
+users:
+- default
+-   lock_passwd: false
+    name: root
+write_files:
+-   content: dXVpZCA9IDdmNjEwNDllLWMzNjktNDBlMy1iNDJmLTQyMmNjOGE5YWU5Nw==
+    encoding: b64
+    owner: 'root: root'
+    path: /etc/uuid
+    permissions: '0666'
+-   content: W2VwZWxdCm5hbWU9RVBFTCBmb3IgcmVkaGF0L2NlbnRvcyAkcmVsZWFzZXZlciAtICRiYXNlYXJjaApmYWlsb3Zlcm1ldGhvZD1wcmlvcml0eQpncGdjaGVjaz0xCmdwZ2tleT1odHRwOi8vbWlycm9ycy50ZW5jZW50eXVuLmNvbS9lcGVsL1JQTS1HUEctS0VZLUVQRUwtNwplbmFibGVkPTEKYmFzZXVybD1odHRwOi8vbWlycm9ycy50ZW5jZW50eXVuLmNvbS9lcGVsLyRyZWxlYXNldmVyLyRiYXNlYXJjaC8=
+    encoding: b64
+    owner: 'root: root'
+    path: /etc/yum.repos.d/CentOS-Epel.repo
+    permissions: '0644'
+-   content: W2V4dHJhc10KZ3BnY2hlY2s9MQpncGdrZXk9aHR0cDovL21pcnJvcnMudGVuY2VudHl1bi5jb20vY2VudG9zL1JQTS1HUEctS0VZLUNlbnRPUy03CmVuYWJsZWQ9MQpiYXNldXJsPWh0dHA6Ly9taXJyb3JzLnRlbmNlbnR5dW4uY29tL2NlbnRvcy8kcmVsZWFzZXZlci9leHRyYXMvJGJhc2VhcmNoLwpuYW1lPVFjbG91ZCBjZW50b3MgZXh0cmFzIC0gJGJhc2VhcmNoCltvc10KZ3BnY2hlY2s9MQpncGdrZXk9aHR0cDovL21pcnJvcnMudGVuY2VudHl1bi5jb20vY2VudG9zL1JQTS1HUEctS0VZLUNlbnRPUy03CmVuYWJsZWQ9MQpiYXNldXJsPWh0dHA6Ly9taXJyb3JzLnRlbmNlbnR5dW4uY29tL2NlbnRvcy8kcmVsZWFzZXZlci9vcy8kYmFzZWFyY2gvCm5hbWU9UWNsb3VkIGNlbnRvcyBvcyAtICRiYXNlYXJjaApbdXBkYXRlc10KZ3BnY2hlY2s9MQpncGdrZXk9aHR0cDovL21pcnJvcnMudGVuY2VudHl1bi5jb20vY2VudG9zL1JQTS1HUEctS0VZLUNlbnRPUy03CmVuYWJsZWQ9MQpiYXNldXJsPWh0dHA6Ly9taXJyb3JzLnRlbmNlbnR5dW4uY29tL2NlbnRvcy8kcmVsZWFzZXZlci91cGRhdGVzLyRiYXNlYXJjaC8KbmFtZT1RY2xvdWQgY2VudG9zIHVwZGF0ZXMgLSAkYmFzZWFyY2g=
+    encoding: b64
+    owner: 'root: root'
+    path: /etc/yum.repos.d/CentOS-Base.repo
+    permissions: '0644'
+...
+
